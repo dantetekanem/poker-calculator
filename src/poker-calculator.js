@@ -327,25 +327,34 @@ PokerCalculator.prototype.TwoPair = function(cards) {
       kCard = cards[k];
       if(iCards.includes(kCard)) { continue; }
 
+      console.log("Comparing "+iCard+" with "+kCard);
       if(iCard.toString().split(":")[1] == kCard.toString().split(":")[1]) {
+        console.log("Pair!");
         pairs++;
       }
     }
   }
 
-  return pairs >= 2;
+  return pairs >= 2 ? true : false;
 }
 
 PokerCalculator.prototype.Pair = function(cards) {
-  var firstCard = cards.shift();
-  var card;
-  var pair = false;
+  var pair = false, iCard, kCard, iCards = [];
+
   for (var i = 0; i < cards.length; ++i) {
-    card = cards[i];
-    if(firstCard.split(":")[1] == card.split(":")[1]) {
-      pair = true;
-      break;
+    iCard = cards[i];
+    iCards.push(iCard);
+
+    for (var k = 0; k < cards.length; ++k) {
+      kCard = cards[k];
+      if(iCards.includes(kCard)) { continue; }
+
+      if(iCard.toString().split(":")[1] == kCard.toString().split(":")[1]) {
+        pair = true;
+        break;
+      }
     }
+    if(pair) { break; }
   }
 
   return pair;
@@ -389,6 +398,22 @@ PokerCalculator.prototype.randomHands = function(amount) {
 
   return this.hands;
 };
+
+PokerCalculator.prototype.getTable = function() {
+  return this.flop;
+}
+
+PokerCalculator.prototype.getFlop = function() {
+  return this.flop.slice(0, 3);
+}
+
+PokerCalculator.prototype.getTurn = function() {
+  return this.flop.slice(3, 1);
+}
+
+PokerCalculator.prototype.getRiver = function() {
+  return this.flop.slice(4, 1);
+}
 
 PokerCalculator.prototype.sortBestHands = function() {
   var hands = {}, hand, points;
